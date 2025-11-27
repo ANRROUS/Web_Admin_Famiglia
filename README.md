@@ -80,7 +80,3 @@ Panel de administración moderno y minimalista para la gestión del e-commerce F
     npm run build
     npm start
     ```
-
-## 📄 Licencia
-
-Este proyecto es propiedad de Famiglia y su uso está restringido a propósitos administrativos internos.
