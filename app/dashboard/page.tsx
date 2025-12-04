@@ -48,7 +48,7 @@ async function getDashboardMetrics() {
                 anonimoId: anonimoId,
                 usuarioId: { $ne: null }
             });
-            
+
             if (!hasUserId) {
                 trulyAnonymous.push(anonimoId);
             }
@@ -179,7 +179,7 @@ export default async function DashboardPage() {
                         </div>
                     </div>
                     <div>
-                        <p className="text-sm font-medium text-slate-500">Usuarios Activos</p>
+                        <p className="text-sm font-medium text-slate-500">Visitas</p>
                         <h3 className="text-2xl font-bold text-slate-900 mt-1 tracking-tight">{metrics.totalActiveUsers}</h3>
                     </div>
                 </div>
