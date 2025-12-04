@@ -49,7 +49,7 @@ export default function RevenueChart({ data }: RevenueChartProps) {
                 ticks: {
                     ...defaultOptions.scales.y.ticks,
                     callback: function (value: number | string) {
-                        return '$' + Number(value).toLocaleString();
+                        return 'S/.' + Number(value).toLocaleString();
                     },
                 },
             },
@@ -60,7 +60,7 @@ export default function RevenueChart({ data }: RevenueChartProps) {
                 ...defaultOptions.plugins.tooltip,
                 callbacks: {
                     label: function (context: any) {
-                        return 'Ingresos: $' + context.parsed.y.toLocaleString();
+                        return 'Ingresos: S/.' + context.parsed.y.toLocaleString();
                     },
                 },
             },

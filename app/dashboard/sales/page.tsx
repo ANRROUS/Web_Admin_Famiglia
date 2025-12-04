@@ -80,7 +80,7 @@ export default async function SalesPage() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm font-medium text-slate-500">Ventas del Mes</p>
-                            <h3 className="text-2xl font-bold text-slate-900 mt-1 tracking-tight">${metrics.monthlyRevenue.toLocaleString()}</h3>
+                            <h3 className="text-2xl font-bold text-slate-900 mt-1 tracking-tight">S/. {metrics.monthlyRevenue.toLocaleString()}</h3>
                         </div>
                         <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600">
                             <DollarSign size={20} strokeWidth={1.5} />
@@ -122,7 +122,7 @@ export default async function SalesPage() {
                 <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
                     <h3 className="font-bold text-slate-800 flex items-center gap-2">
                         <AlertTriangle size={18} className="text-amber-500" />
-                        Carritos Abandonados
+                        Carritos Pendientes
                     </h3>
                 </div>
 
@@ -159,7 +159,7 @@ export default async function SalesPage() {
                                             {totalItems} productos
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-emerald-600">
-                                            ${totalValue.toFixed(2)}
+                                            S/.{totalValue.toFixed(2)}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             {cart.id_usuario ? (

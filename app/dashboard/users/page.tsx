@@ -104,7 +104,7 @@ export default async function UsersPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-slate-50 rounded-lg text-slate-600">
+                        <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
                             <UsersIcon size={20} strokeWidth={1.5} />
                         </div>
                     </div>
@@ -116,7 +116,7 @@ export default async function UsersPage() {
 
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-slate-50 rounded-lg text-slate-600">
+                        <div className="p-2 bg-red-50 rounded-lg text-red-600">
                             <Activity size={20} strokeWidth={1.5} />
                         </div>
                     </div>
@@ -128,7 +128,7 @@ export default async function UsersPage() {
 
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-slate-50 rounded-lg text-slate-600">
+                        <div className="p-2 bg-yellow-50 rounded-lg text-yellow-300">
                             <TrendingUp size={20} strokeWidth={1.5} />
                         </div>
                     </div>
@@ -140,7 +140,7 @@ export default async function UsersPage() {
 
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-slate-50 rounded-lg text-slate-600">
+                        <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600">
                             <BarChart3 size={20} strokeWidth={1.5} />
                         </div>
                     </div>

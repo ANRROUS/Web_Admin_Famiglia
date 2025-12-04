@@ -22,24 +22,39 @@ async function getDashboardMetrics() {
         }
     });
 
-    // 3. Active Users (Auth + Anon from Audit Logs in last 30 days)
+    // 3. Active Users (FIXED: Avoid double counting)
     let totalActiveUsers = 0;
     try {
         await dbConnect();
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
+        // Get unique registered users
         const activeUsersCount = await Auditoria.distinct('usuarioId', {
             creadoEn: { $gte: thirtyDaysAgo },
             usuarioId: { $ne: null }
         });
 
-        const activeAnonCount = await Auditoria.distinct('anonimoId', {
+        // Get anonimoIds that NEVER had a usuarioId (truly anonymous)
+        const allAnonimoIds = await Auditoria.distinct('anonimoId', {
             creadoEn: { $gte: thirtyDaysAgo },
             anonimoId: { $ne: null }
         });
 
-        totalActiveUsers = activeUsersCount.length + activeAnonCount.length;
+        // Filter out anonimoIds that have any record with usuarioId
+        const trulyAnonymous = [];
+        for (const anonimoId of allAnonimoIds) {
+            const hasUserId = await Auditoria.findOne({
+                anonimoId: anonimoId,
+                usuarioId: { $ne: null }
+            });
+            
+            if (!hasUserId) {
+                trulyAnonymous.push(anonimoId);
+            }
+        }
+
+        totalActiveUsers = activeUsersCount.length + trulyAnonymous.length;
     } catch (error) {
         console.error('Error fetching active users from MongoDB:', error);
     }
@@ -133,28 +148,22 @@ export default async function DashboardPage() {
                 {/* Revenue */}
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-slate-50 rounded-lg text-slate-600">
+                        <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600">
                             <DollarSign size={20} strokeWidth={1.5} />
                         </div>
-                        <span className="flex items-center text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
-                            <ArrowUpRight size={12} className="mr-1" /> +12.5%
-                        </span>
                     </div>
                     <div>
                         <p className="text-sm font-medium text-slate-500">Ingresos Totales</p>
-                        <h3 className="text-2xl font-bold text-slate-900 mt-1 tracking-tight">${metrics.totalRevenue.toLocaleString()}</h3>
+                        <h3 className="text-2xl font-bold text-slate-900 mt-1 tracking-tight">S/. {metrics.totalRevenue.toLocaleString()}</h3>
                     </div>
                 </div>
 
                 {/* Orders */}
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-slate-50 rounded-lg text-slate-600">
+                        <div className="p-2 bg-orange-50 rounded-lg text-orange-600">
                             <ShoppingBag size={20} strokeWidth={1.5} />
                         </div>
-                        <span className="flex items-center text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
-                            <ArrowUpRight size={12} className="mr-1" /> +5.2%
-                        </span>
                     </div>
                     <div>
                         <p className="text-sm font-medium text-slate-500">Pedidos del Mes</p>
@@ -165,12 +174,9 @@ export default async function DashboardPage() {
                 {/* Active Users */}
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-slate-50 rounded-lg text-slate-600">
+                        <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
                             <Users size={20} strokeWidth={1.5} />
                         </div>
-                        <span className="flex items-center text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
-                            <ArrowUpRight size={12} className="mr-1" /> +8.1%
-                        </span>
                     </div>
                     <div>
                         <p className="text-sm font-medium text-slate-500">Usuarios Activos</p>
@@ -181,12 +187,9 @@ export default async function DashboardPage() {
                 {/* Conversion Rate */}
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-slate-50 rounded-lg text-slate-600">
+                        <div className="p-2 bg-yellow-50 rounded-lg text-yellow-300">
                             <TrendingUp size={20} strokeWidth={1.5} />
                         </div>
-                        <span className="flex items-center text-xs font-medium text-rose-600 bg-rose-50 px-2 py-1 rounded-full">
-                            <ArrowDownRight size={12} className="mr-1" /> -1.2%
-                        </span>
                     </div>
                     <div>
                         <p className="text-sm font-medium text-slate-500">Tasa de Conversión</p>
